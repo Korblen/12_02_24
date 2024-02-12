@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   get 'welcome/:first_name', to: 'static_pages#welcome'
   get 'home', to: 'static_pages#home'
+  get 'gossips/:id', to: 'gossips#show', as: 'gossip'
+  get 'users/:id', to: 'users#show', as: 'user'
 end

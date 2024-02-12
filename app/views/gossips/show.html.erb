@@ -1,4 +1,4 @@
-<!-- app/views/static_pages/home.html.erb -->
+<!-- app/views/gossips/show.html.erb -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/home">The Gossip Project</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,18 +15,7 @@
       </li>
   </div>
 </nav>
-<div class="container">
-  <h1 class="text-center mt-5">Bienvenue sur notre site !</h1>
-  <p class="text-muted text-center">Ceci est la page d'accueil de notre application.</p>
-</div>
-<ul>
-  <% @gossips.each do |gossip| %>
-    <li>
-        <div class="card">
-            <div class="card-body">
-                <strong>Auteur :</strong> <%= gossip.user.first_name %><strong> Title :</strong> <%= link_to gossip.title, gossip_path(gossip) %>
-            </div>
-        </div>   
-    </li>
-<% end %>
-</ul>
+<h1><%= @gossip.title %></h1>
+<p><%= @gossip.content %></p>
+<p>Auteur : <%= link_to @gossip.user.first_name, user_path(@gossip.user) %></p>
+<p>Publié le : <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></p>

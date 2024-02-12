@@ -1,4 +1,3 @@
-<!-- app/views/static_pages/home.html.erb -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/home">The Gossip Project</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,18 +14,19 @@
       </li>
   </div>
 </nav>
-<div class="container">
-  <h1 class="text-center mt-5">Bienvenue sur notre site !</h1>
-  <p class="text-muted text-center">Ceci est la page d'accueil de notre application.</p>
+<h1>Profil de l'utilisateur</h1>
+<div>
+  <p><strong>Nom :</strong> <%= @user.last_name %></p>
+  <p><strong>Prénom :</strong> <%= @user.first_name %></p>
+  <p><strong>Email :</strong> <%= @user.email %></p>
+  <!-- Ajoutez d'autres informations que vous souhaitez afficher sur l'utilisateur -->
 </div>
+<h2>Potins de <%= @user.first_name %></h2>
 <ul>
-  <% @gossips.each do |gossip| %>
+  <% @user.gossips.each do |gossip| %>
     <li>
-        <div class="card">
-            <div class="card-body">
-                <strong>Auteur :</strong> <%= gossip.user.first_name %><strong> Title :</strong> <%= link_to gossip.title, gossip_path(gossip) %>
-            </div>
-        </div>   
+    <%= link_to gossip.title, gossip_path(gossip) %>
+      <p><%= gossip.content %></p>
     </li>
-<% end %>
+  <% end %>
 </ul>
