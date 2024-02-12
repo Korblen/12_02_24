@@ -67,3 +67,7 @@ group :test do
 end
 
 gem "faker", "~> 3.2"
+
+gem "tp", "~> 0.5.1"
+
+gem "table_print", "~> 1.5"

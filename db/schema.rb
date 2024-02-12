@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_12_112557) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_12_114401) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,10 +35,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_12_112557) do
     t.bigint "tag_id", null: false
   end
 
+  create_table "private_message_recipients", force: :cascade do |t|
+    t.bigint "private_message_id", null: false
+    t.bigint "recipient_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["private_message_id"], name: "index_private_message_recipients_on_private_message_id"
+    t.index ["recipient_id"], name: "index_private_message_recipients_on_recipient_id"
+  end
+
   create_table "private_messages", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "sender_id"
+    t.index ["sender_id"], name: "index_private_messages_on_sender_id"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -55,7 +66,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_12_112557) do
     t.integer "age"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "city_id"
+    t.index ["city_id"], name: "index_users_on_city_id"
   end
 
   add_foreign_key "gossips", "users"
+  add_foreign_key "private_message_recipients", "private_messages"
+  add_foreign_key "private_message_recipients", "users", column: "recipient_id"
+  add_foreign_key "private_messages", "users", column: "sender_id"
+  add_foreign_key "users", "cities"
 end
