@@ -1,4 +1,3 @@
-<!-- app/views/static_pages/welcome.html.erb -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/home">The Gossip Project</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,5 +17,15 @@
       </li>
   </div>
 </nav>
-<h1>BIENVENUE <%= @first_name %> !</h1>
-<p>Ici c'est notre super site de potins, il est chouette, non ?</p>
+<h1><%= @city.name %></h1>
+
+<h2>Potins de cette ville :</h2>
+<ul>
+  <% @gossips.each do |gossip| %>
+    <li>
+      <strong><%= link_to gossip.title, gossip_path(gossip) %>:</strong>
+      <%= gossip.content %>
+      par <%= link_to gossip.user.first_name, user_path(gossip.user) %>
+    </li>
+  <% end %>
+</ul>

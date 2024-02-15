@@ -1,0 +1,8 @@
+.gossip-card {
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.gossip-card:hover {
+    transform: scale(1.05); /* Augmente légèrement la taille de la carte */
+    background-color: #f8f9fa; /* Change la couleur de fond au survol */
+}

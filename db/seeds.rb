@@ -26,24 +26,33 @@ end
 puts "10 villes créées"
 
 # Création de 10 utilisateurs
+User.create(
+  first_name: "anonymous",
+  last_name: "user",
+  description: "No description yet",
+  email: "No email registered",
+  age: 0,
+  city: City.all.sample 
+)
+
 10.times do |i|
   User.create!(
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
-    description: Faker::Lorem.sentence(word_count: 20),
+    description: Faker::Lorem.sentence,
     email: Faker::Internet.email,
     age: rand(18..70),
     city: City.all.sample
   )
 end
 puts "10 utilisateurs créés"
-
+users_except_anonymous = User.where.not(first_name: "anonymous")
 # Création de 20 gossips
-20.times do
+5.times do
   Gossip.create!(
     title: Faker::Lorem.sentence(word_count: 3),
     content: Faker::Lorem.paragraph(sentence_count: 2),
-    user: User.all.sample
+    user: users_except_anonymous.sample
   )
 end
 puts "20 gossips créés"

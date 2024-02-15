@@ -13,6 +13,12 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   get 'welcome/:first_name', to: 'static_pages#welcome'
   get 'home', to: 'static_pages#home'
+  resources :gossips, only: [:new, :create]
   get 'gossips/:id', to: 'gossips#show', as: 'gossip'
   get 'users/:id', to: 'users#show', as: 'user'
+  resources :cities, only: [:show]
+  resources :gossips, only: [:edit, :update]
+  resources :gossips do
+    resources :comments, only: [:create, :edit, :update, :destroy]
+  end
 end

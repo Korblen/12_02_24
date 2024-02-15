@@ -12,6 +12,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/contact">nous contacter</a>
       </li>
+      <li class="nav-item">
+      <a class="nav-link" href="/gossips/new">écrire un gossip</a>
+    </li>
   </div>
 </nav>
 <h1>Profil de l'utilisateur</h1>
@@ -19,6 +22,9 @@
   <p><strong>Nom :</strong> <%= @user.last_name %></p>
   <p><strong>Prénom :</strong> <%= @user.first_name %></p>
   <p><strong>Email :</strong> <%= @user.email %></p>
+  <p><strong>Description :</strong> <%= @user.description %></p>
+  <p><%= link_to 'Voir la ville', city_path(@user.city) %>p>
+  <p><strong>age : </strong><%= @user.age %></p>
   <!-- Ajoutez d'autres informations que vous souhaitez afficher sur l'utilisateur -->
 </div>
 <h2>Potins de <%= @user.first_name %></h2>

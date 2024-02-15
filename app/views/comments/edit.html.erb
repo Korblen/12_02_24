@@ -1,4 +1,3 @@
-<!-- app/views/static_pages/welcome.html.erb -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/home">The Gossip Project</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +15,16 @@
       <li class="nav-item">
         <a class="nav-link" href="/gossips/new">écrire un gossip</a>
       </li>
+      </ul>
   </div>
 </nav>
-<h1>BIENVENUE <%= @first_name %> !</h1>
-<p>Ici c'est notre super site de potins, il est chouette, non ?</p>
+<%= form_with(model: [@gossip, @comment], local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :content %>
+    <%= form.text_area :content, class: 'form-control' %>
+  </div>
+
+  <%= form.submit 'Sauvegarder les modifications', class: 'btn btn-primary' %>
+<% end %>
+
+<%= button_to 'Supprimer ce commentaire', [@gossip, @comment], method: :delete, data: { confirm: 'Êtes-vous sûr ?', turbo_method: 'delete' }, class: 'btn btn-danger' %>

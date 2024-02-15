@@ -13,9 +13,38 @@
       <li class="nav-item">
         <a class="nav-link" href="/contact">nous contacter</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/gossips/new">écrire un gossip</a>
+      </li>
   </div>
 </nav>
 <h1><%= @gossip.title %></h1>
 <p><%= @gossip.content %></p>
+<%= link_to 'Éditer ce potin', edit_gossip_path(@gossip), class: 'btn btn-secondary' %>
+<%= button_to 'Supprimer ce potin', gossip_path(@gossip), method: :delete, data: { turbo_method: :delete, confirm: 'Êtes-vous sûr ?' }, class: 'btn btn-danger' %>
 <p>Auteur : <%= link_to @gossip.user.first_name, user_path(@gossip.user) %></p>
+<p><%= link_to 'Voir la ville', city_path(@gossip.user.city) %></p>
 <p>Publié le : <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></p>
+<%= form_with(model: [ @gossip, @gossip.comments.build ], local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :content, 'Votre commentaire' %>
+    <%= form.text_area :content, class: 'form-control' %>
+  </div>
+  <%= form.submit 'Commenter', class: 'btn btn-primary' %>
+<% end %>
+<% if @gossip.comments.exists? %>
+  <h3>Commentaires :</h3>
+  <ul>
+    <% @gossip.comments.each do |comment| %>
+      <% if comment.content != nil %>
+      <li>
+          <p><%= comment.content %></p>
+          <p>Auteur : <%= comment.user&.first_name|| "Anonymous" %></p>
+          <%= link_to 'Éditer', edit_gossip_comment_path(comment.gossip, comment), class: 'btn btn-secondary' %>
+      </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Aucun commentaire pour le moment.</p>
+<% end %>
