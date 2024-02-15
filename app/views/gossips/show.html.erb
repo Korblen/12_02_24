@@ -36,10 +36,12 @@
   <h3>Commentaires :</h3>
   <ul>
     <% @gossip.comments.each do |comment| %>
-      <li>
-          <p><%= comment.content %></p>
-          <p>Auteur : <%= comment.user&.first_name || "Anonyme" %></p>
-          <%= link_to 'Éditer', edit_gossip_comment_path(comment.gossip, comment), class: 'btn btn-secondary' %>
+          <% if comment.persisted? %>
+            <li>
+            <p><%= comment.content %></p>
+            <p>Auteur : <%= comment.user&.first_name %></p>
+            <%= link_to 'Éditer', edit_gossip_comment_path(comment.gossip, comment), class: 'btn btn-secondary' %>
+          <% end %>
       </li>
     <% end %>
   </ul>
