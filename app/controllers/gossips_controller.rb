@@ -9,16 +9,25 @@ class GossipsController < ApplicationController
     end
 
     def new
-        @gossip = Gossip.new
-    end
-    
-    def create
-        default_user = User.find(1)
-        @gossip = default_user.gossips.build(gossip_params)
-        if @gossip.save
-          redirect_to home_path, notice:'gossip créé avec succès'
+        if session[:user_id]
+            @gossip = Gossip.new
         else
-          render :new
+            redirect_to login_path
+        end
+    end
+
+    def create
+        if session[:user_id]
+        @gossip = Gossip.new(gossip_params)
+        @gossip.user = User.find(session[:user_id])
+      
+            if @gossip.save
+                redirect_to home_path, notice: 'Votre potin a été créé avec succès.'
+            else
+                render :new
+            end
+        else
+            redirect_to login_path, alert: 'Vous devez être connecté pour créer un potin.'
         end
     end
 

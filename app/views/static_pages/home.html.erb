@@ -6,21 +6,50 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" data-turbo="false">
+      <ul class="navbar-nav mr-auto" data-turbo="false">
+        <li class="nav-item active" data-turbo="false">
           <a class="nav-link" href="/team">l'équipe <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" data-turbo="false">
           <a class="nav-link" href="/contact">nous contacter</a>
         </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/gossips/new">écrire un gossip</a>
-      </li>
+        <li class="nav-item" data-turbo="false">
+          <a class="nav-link" href="/gossips/new">écrire un gossip</a>
+        </li>
+        <% if session[:user_id] %>
+        <li class="nav-item dropdown"data-turbo="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuAccount" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Mon compte
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuAccount"data-turbo="false">
+            <%= link_to 'Mon Compte', edit_user_path(session[:user_id]), class: 'dropdown-item' %>  
+            <%= link_to 'Déconnexion', logout_path, method: :delete, class: 'dropdown-item' %>
+          </ul>
+        </li>
+      <% else %>
+        <li class="nav-item dropdown"data-turbo="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLogin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Compte
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLogin"data-turbo="false">
+            <%= link_to 'Connexion', login_path, class: 'dropdown-item' %>
+            <%= link_to "S'inscrire", new_user_path, class: 'dropdown-item' %>
+          </ul>
+        </li>
+        <% end %>
     </div>
   </nav>
   <div class="container">
+    <%if session[:user_id] && User.find_by(id: session[:user_id]) != nil%>
+      <% if User.find_by(id: session[:user_id]).first_name != nil %>
+        <h1 class="text-center mt-5"> Bienvenue <%= User.find_by(id: session[:user_id]).first_name %> ! </h1>
+      <% else %>
+        <h1 class="text-center mt-5">Bienvenue sur notre site !</h1>
+      <%end%>
+    <% else %>
     <h1 class="text-center mt-5">Bienvenue sur notre site !</h1>
+    <% end %>
     <p class="text-muted text-center">Ceci est la page d'accueil de notre application.</p>
   </div>
   <ul>
@@ -41,4 +70,5 @@
           </div>
       </div>
   </ul>
+</div>
 </body>

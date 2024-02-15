@@ -1,0 +1,11 @@
+<%= form_with(model: @user, local: true) do |form| %>
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  
+    <!-- Vos autres champs de formulaire -->
+  
+    <%= form.submit "Mettre à jour" %>
+  <% end %>

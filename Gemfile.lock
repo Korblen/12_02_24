@@ -78,6 +78,7 @@ GEM
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     base64 (0.2.0)
+    bcrypt (3.1.20)
     bigdecimal (3.1.6)
     bindex (0.8.1)
     bootsnap (1.18.3)
@@ -227,10 +228,6 @@ GEM
     timeout (0.4.1)
     tp (0.5.1)
       coderay (~> 1.0)
-    turbo-rails (2.0.2)
-      actionpack (>= 6.0.0)
-      activejob (>= 6.0.0)
-      railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     web-console (4.2.1)
@@ -256,6 +253,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bcrypt (~> 3.1.7)
   bootsnap
   capybara
   debug
@@ -270,7 +268,6 @@ DEPENDENCIES
   stimulus-rails
   table_print (~> 1.5)
   tp (~> 0.5.1)
-  turbo-rails
   tzinfo-data
   web-console
 
