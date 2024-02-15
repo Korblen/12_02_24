@@ -40,35 +40,41 @@
         <% end %>
     </div>
   </nav>
-  <div class="container">
-    <%if session[:user_id] && User.find_by(id: session[:user_id]) != nil%>
-      <% if User.find_by(id: session[:user_id]).first_name != nil %>
-        <h1 class="text-center mt-5"> Bienvenue <%= User.find_by(id: session[:user_id]).first_name %> ! </h1>
-      <% else %>
-        <h1 class="text-center mt-5">Bienvenue sur notre site !</h1>
-      <%end%>
+  <div class="container mt-5">
+  <div class="jumbotron text-center">
+    <% if session[:user_id] && (user = User.find_by(id: session[:user_id])) %>
+      <h1 class="display-4">Bienvenue, <%= user.first_name %> !</h1>
     <% else %>
-    <h1 class="text-center mt-5">Bienvenue sur notre site !</h1>
+      <h1 class="display-4">Bienvenue sur notre site !</h1>
     <% end %>
-    <p class="text-muted text-center">Ceci est la page d'accueil de notre application.</p>
+    <p class="lead text-muted">Ceci est la page d'accueil de notre application.</p>
   </div>
-  <ul>
-      <div class="container">
-          <div class="row">
-              <% @gossips.each do |gossip| %>
-                  <div class="col-md-4">
-                      <div class="card gossip-card" style="width: 18rem;">
-                          <div class="card-body">
-                              <h5 class="card-title"><strong>Auteur :</strong></h5>
-                              <h6 class="card-subtitle mb-2 text-muted"><%= gossip.user.first_name %></h6>
-                              <p class="card-text"><strong>Title :</strong> <%= link_to gossip.title, gossip_path(gossip) %></p>
-                              <p class="card-text"> Nombre de commentaires : <%= gossip.comments.count %> </p>
-                          </div>
-                      </div>
-                  </div>
-              <% end %>
-          </div>
+</div>
+<div class="container mt-4">
+<div class="row">
+  <% @gossips.each do |gossip| %>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Titre : <%= link_to gossip.title, gossip_path(gossip) %></h5>
+          <h6 class="card-subtitle mb-2 text-muted">Auteur : <%= link_to gossip.user.first_name, user_path(gossip.user) %></h6>
+          <p class="card-text"><%= truncate(gossip.content, length: 100) %></p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Nombre de commentaires : <%= gossip.comments.count %></small>
+          <small class="text-muted">Nombre de likes : <%= gossip.likes.count %></small>
+          <% if current_user %>
+            <% like = gossip.likes.find_by(user_id: current_user.id) %>
+            <% if like %>
+              <%= button_to 'Déliker', gossip_like_path(gossip, like), method: :delete, class: 'btn btn-warning btn-sm' %>
+            <% else %>
+              <%= button_to 'Liker', gossip_likes_path(gossip), method: :post, class: 'btn btn-primary btn-sm' %>
+            <% end %>
+          <% end %>
+        </div>
       </div>
-  </ul>
+    </div>
+  <% end %>
+</div>
 </div>
 </body>

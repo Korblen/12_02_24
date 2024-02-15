@@ -1,5 +1,6 @@
 class GossipsController < ApplicationController
-    before_action :set_gossip, only: [:show]
+    before_action :set_gossip, only: [:show, :edit, :update, :destroy]
+    before_action :check_user, only: [:edit, :update, :destroy]
     def show
         @gossip = Gossip.find(params[:id])
         @user = @gossip.user
@@ -65,5 +66,11 @@ class GossipsController < ApplicationController
       rescue ActiveRecord::RecordNotFound
         flash[:alert] = "Le potin que vous cherchez n'existe pas."
         redirect_to root_path
+    end
+
+    def check_user
+        unless current_user == @gossip.user
+          redirect_to gossips_path, alert: "Vous n'êtes pas autorisé à effectuer cette action."
+        end
     end
 end

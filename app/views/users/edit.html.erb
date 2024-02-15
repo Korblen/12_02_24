@@ -1,11 +1,52 @@
-<%= form_with(model: @user, local: true) do |form| %>
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name %>
-  
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name %>
-  
-    <!-- Vos autres champs de formulaire -->
-  
-    <%= form.submit "Mettre à jour" %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/home">The Gossip Project</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/team">L'équipe</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contact">Nous contacter</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/gossips/new">Écrire un gossip</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h2 class="mb-3">Modifier le Profil</h2>
+  <%= form_with(model: @user, local: true, class: 'needs-validation', novalidate: true) do |form| %>
+    <div class="form-group">
+      <%= form.label :first_name, 'Prénom', class: 'form-label' %>
+      <%= form.text_field :first_name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :last_name, 'Nom', class: 'form-label' %>
+      <%= form.text_field :last_name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :age, 'Âge', class: 'form-label' %>
+      <%= form.number_field :age, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description, 'Description', class: 'form-label' %>
+      <%= form.text_area :description, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :city_name, 'Ville', class: 'form-label' %>
+      <%= form.text_field :city_name, value: @user.city&.name, class: 'form-control' %>
+    </div>
+
+    <%= form.submit "Mettre à jour", class: "btn btn-primary" %>
   <% end %>
+</div>

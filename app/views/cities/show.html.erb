@@ -6,26 +6,41 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/team">l'équipe <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="/team">L'équipe</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/contact">nous contacter</a>
+        <a class="nav-link" href="/contact">Nous contacter</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/gossips/new">écrire un gossip</a>
+        <a class="nav-link" href="/gossips/new">Écrire un gossip</a>
       </li>
+    </ul>
   </div>
 </nav>
-<h1><%= @city.name %></h1>
 
-<h2>Potins de cette ville :</h2>
-<ul>
-  <% @gossips.each do |gossip| %>
-    <li>
-      <strong><%= link_to gossip.title, gossip_path(gossip) %>:</strong>
-      <%= gossip.content %>
-      par <%= link_to gossip.user.first_name, user_path(gossip.user) %>
-    </li>
-  <% end %>
-</ul>
+<div class="container mt-5">
+  <h1 class="mb-4 text-center"><%= @city.name %></h1>
+
+  <h2 class="mb-3">Potins de cette ville :</h2>
+  <div class="list-group">
+    <% @gossips.each do |gossip| %>
+      <div class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1"><%= link_to gossip.title, gossip_path(gossip) %></h5>
+          <small><%= pluralize(gossip.likes.count, "like") %></small>
+        </div>
+        <p class="mb-1"><%= gossip.content %></p>
+        <small>par <%= link_to gossip.user.first_name, user_path(gossip.user) %></small>
+        <% if current_user %>
+          <% like = gossip.likes.find_by(user_id: current_user.id) %>
+          <% if like %>
+            <%= button_to 'Déliker', gossip_like_path(gossip, like), method: :delete, class: "btn btn-warning btn-sm" %>
+          <% else %>
+            <%= button_to 'Liker', gossip_likes_path(gossip), method: :post, class: "btn btn-primary btn-sm" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -6,27 +6,35 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/team">l'équipe <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="/team">L'équipe</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/contact">nous contacter</a>
+        <a class="nav-link" href="/contact">Nous contacter</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/gossips/new">écrire un gossip</a>
+        <a class="nav-link" href="/gossips/new">Écrire un gossip</a>
       </li>
+    </ul>
   </div>
 </nav>
-<%= form_with(model: @gossip, local: true) do |form| %>
+
+<div class="container mt-5">
+  <h1 class="mb-4">Modifier le Potin</h1>
+
+  <%= form_with(model: @gossip, local: true) do |form| %>
     <div class="form-group">
-      <%= form.label :title, 'Titre' %>
-      <%= form.text_field :title, class: 'form-control' %>
+      <%= form.label :title, 'Titre', class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-control', placeholder: 'Entrez le titre ici' %>
     </div>
   
     <div class="form-group">
-      <%= form.label :content, 'Contenu' %>
-      <%= form.text_area :content, class: 'form-control' %>
+      <%= form.label :content, 'Contenu', class: 'form-label' %>
+      <%= form.text_area :content, class: 'form-control', rows: 5, placeholder: 'Entrez le contenu du potin ici' %>
     </div>
   
-    <%= form.submit "Enregistrer les modifications", class: "btn btn-primary" %>
-<% end %>
+    <div class="text-center">
+      <%= form.submit "Enregistrer les modifications", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

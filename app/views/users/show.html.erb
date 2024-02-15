@@ -7,32 +7,38 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/team">l'équipe <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/team">L'équipe <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/contact">nous contacter</a>
+        <a class="nav-link" href="/contact">Nous contacter</a>
       </li>
       <li class="nav-item">
-      <a class="nav-link" href="/gossips/new">écrire un gossip</a>
-    </li>
+        <a class="nav-link" href="/gossips/new">Écrire un gossip</a>
+      </li>
+    </ul>
   </div>
 </nav>
-<h1>Profil de l'utilisateur</h1>
-<div>
-  <p><strong>Nom :</strong> <%= @user.last_name %></p>
-  <p><strong>Prénom :</strong> <%= @user.first_name %></p>
-  <p><strong>Email :</strong> <%= @user.email %></p>
-  <p><strong>Description :</strong> <%= @user.description %></p>
-  <p><%= link_to 'Voir la ville', city_path(@user.city) %></p>
-  <p><strong>age : </strong><%= @user.age %></p>
-  <!-- Ajoutez d'autres informations que vous souhaitez afficher sur l'utilisateur -->
+
+<div class="container mt-5">
+  <h1 class="mb-4">Profil de <%= @user.first_name %> <%= @user.last_name %></h1>
+  
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Informations personnelles</h5>
+      <p class="card-text"><strong>Email :</strong> <%= @user.email %></p>
+      <p class="card-text"><strong>Description :</strong> <%= @user.description %></p>
+      <p class="card-text"><strong>Ville :</strong> <%= link_to @user.city.name, city_path(@user.city) if @user.city %></p>
+      <p class="card-text"><strong>Âge :</strong> <%= @user.age %></p>
+    </div>
+  </div>
+
+  <h2 class="mt-4">Potins de <%= @user.first_name %></h2>
+  <div class="list-group">
+    <% @user.gossips.each do |gossip| %>
+      <a href="<%= gossip_path(gossip) %>" class="list-group-item list-group-item-action">
+        <h5 class="mb-1"><%= gossip.title %></h5>
+        <p class="mb-1"><%= truncate(gossip.content, length: 100) %></p>
+      </a>
+    <% end %>
+  </div>
 </div>
-<h2>Potins de <%= @user.first_name %></h2>
-<ul>
-  <% @user.gossips.each do |gossip| %>
-    <li>
-    <%= link_to gossip.title, gossip_path(gossip) %>
-      <p><%= gossip.content %></p>
-    </li>
-  <% end %>
-</ul>

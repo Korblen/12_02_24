@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :gossips, only: [:edit, :update]
   resources :gossips do
     resources :comments, only: [:create, :edit, :update, :destroy]
+    resources :likes, only: [:create, :destroy]
   end
   get 'logout', to: 'sessions#destroy', as: 'logout'
   get 'login', to: 'sessions#new', as: 'login'

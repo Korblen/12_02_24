@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
     def create
+      if session[:user_id]
         @gossip = Gossip.find(params[:gossip_id])
         @comment = @gossip.comments.build(comment_params)
         @comment.user = User.find_by(id: session[:user_id])  
@@ -9,6 +10,9 @@ class CommentsController < ApplicationController
         else
           render 'gossips/show'
         end
+      else
+        redirect_to login_path, alert: 'Vous devez être connecté pour créer un potin.'
+      end
     end
 
     def edit

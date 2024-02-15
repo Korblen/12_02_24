@@ -1,4 +1,3 @@
-<!-- app/views/gossips/show.html.erb -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/home">The Gossip Project</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,33 +17,51 @@
       </li>
   </div>
 </nav>
-<h1><%= @gossip.title %></h1>
-<p><%= @gossip.content %></p>
-<%= link_to 'Éditer ce potin', edit_gossip_path(@gossip), class: 'btn btn-secondary' %>
-<%= button_to 'Supprimer ce potin', gossip_path(@gossip), method: :delete, data: { turbo_method: :delete, confirm: 'Êtes-vous sûr ?' }, class: 'btn btn-danger' %>
-<p>Auteur : <%= link_to @gossip.user&.first_name || "Anonyme", user_path(@gossip.user) if @gossip.user %></p>
-<p><%= link_to 'Voir la ville', city_path(@gossip.user&.city) if @gossip.user&.city %></p>
-<p>Publié le : <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></p>
-<%= form_with(model: [ @gossip, @gossip.comments.build ], local: true) do |form| %>
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4"><%= @gossip.title %></h1>
+    
+    <div class="card mb-4">
+      <div class="card-body">
+        <p class="card-text"><%= @gossip.content %></p>
+        <p class="card-text"><small class="text-muted">Auteur: <%= link_to @gossip.user&.first_name || "Anonyme", user_path(@gossip.user) if @gossip.user %></small></p>
+        <p class="card-text"><small class="text-muted">Publié le: <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></small></p>
+        <% if current_user == @gossip.user %>
+          <%= link_to 'Éditer ce potin', edit_gossip_path(@gossip), class: 'btn btn-secondary btn-sm' %>
+          <%= button_to 'Supprimer ce potin', gossip_path(@gossip), method: :delete, data: { confirm: 'Êtes-vous sûr ?' }, class: 'btn btn-danger btn-sm' %>
+        <% end %>
+      </div>
+    </div>
+  <% if current_user %>
+    <% like = @gossip.likes.find_by(user_id: current_user.id) %>
+    <% if like %>
+      <%= button_to 'Déliker', gossip_like_path(@gossip, like), method: :delete, class: 'btn btn-warning' %>
+    <% else %>
+      <%= button_to 'Liker', gossip_likes_path(@gossip), method: :post, class: 'btn btn-primary' %>
+    <% end %>
+    <span><%= @gossip.likes.count %> Likes</span>
+  <% else %>
+    <p>Connectez-vous pour liker ce potin.</p>
+  <% end %>
+<%= form_with(model: [ @gossip, @gossip.comments.build ], local: true, class: 'mb-4') do |form| %>
   <div class="form-group">
-    <%= form.label :content, 'Votre commentaire' %>
+    <%= form.label :content, 'Votre commentaire', class: 'font-weight-bold' %>
     <%= form.text_area :content, class: 'form-control' %>
   </div>
-  <%= form.submit 'Commenter', class: 'btn btn-primary' %>
+  <%= form.submit 'Commenter', class: 'btn btn-success' %>
 <% end %>
+</div>
 <% if @gossip.comments.exists? %>
   <h3>Commentaires :</h3>
-  <ul>
     <% @gossip.comments.each do |comment| %>
           <% if comment.persisted? %>
-            <li>
-            <p><%= comment.content %></p>
-            <p>Auteur : <%= comment.user&.first_name %></p>
-            <%= link_to 'Éditer', edit_gossip_comment_path(comment.gossip, comment), class: 'btn btn-secondary' %>
+          <div class="card mb-2 ml-5 mr-5">
+            <div class="card-body">
+              <p class="card-text"><%= link_to comment.user&.first_name, user_path(comment.user) %></small></p>
+              <p class="card-text"><%= comment.content %></p>
+            </div>
+          </div>
           <% end %>
-      </li>
     <% end %>
-  </ul>
 <% else %>
   <p>Aucun commentaire pour le moment.</p>
 <% end %>
